@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#073a88" />
+  <meta name="description" content="Mapas textuais interativos: cinco ramos da Contabilidade. Curso de Contabilidade — Professor Moreira." />
+  <title>Ramos da Contabilidade | Professor Moreira</title>
+  <style>
+    :root {
+      --navy:#06285e; --royal:#075cc5; --sky:#1385df; --deep:#051d44;
+      --yellow:#ffe469; --yellow-strong:#ffcf4e; --white:#f9fcff;
+      --muted:#cce1fc; --pane:rgba(255,255,255,.105); --line:rgba(255,255,255,.2);
+      --shadow:0 20px 44px rgba(2,18,52,.24);
+      --reading:1;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#06152f;color:var(--white);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+    button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    button:focus-visible,a:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    .app{width:100%;max-width:560px;min-height:100dvh;margin:0 auto;overflow:hidden;background:linear-gradient(165deg,#0871cc 0%,#064489 37%,#051f4c 100%);position:relative;box-shadow:0 12px 40px #0004}
+    .app:before{content:"";position:fixed;pointer-events:none;inset:0;z-index:0;background:radial-gradient(circle at 13% 13%,#75bfff39 0,transparent 29%),radial-gradient(circle at 93% 88%,#ffaa5518 0,transparent 27%)}
+    .app > *{position:relative;z-index:1}
+    .topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid #ffffff2b;background:#07397ecf;backdrop-filter:blur(12px);position:sticky;top:0;z-index:20}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .seal{width:38px;height:38px;border-radius:12px;background:var(--yellow);color:#07346d;display:grid;place-items:center;font-weight:950;letter-spacing:-2px;font-size:19px;box-shadow:0 3px 0 #d6aa27}
+    .brand-text{font-size:11px;line-height:1.13;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+    .brand-text strong{display:block;font-size:14px;letter-spacing:.02em}
+    .top-actions{display:flex;gap:6px}
+    .tiny-btn{background:#ffffff18;color:white;border:1px solid #ffffff3b;border-radius:10px;padding:8px 10px;font-size:13px;font-weight:850}
+    .view{display:none;animation:show .24s ease-out}
+    .view.active{display:block}
+    @keyframes show{from{opacity:.35;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .home{padding:0 20px 112px}
+    .cover{position:relative;isolation:isolate;min-height:480px;border-radius:0 0 34px 34px;margin:0 -20px;padding:50px 23px 32px;background:radial-gradient(circle at 90% 17%,#44b8ff99,transparent 35%),linear-gradient(165deg,#147fdf 3%,#0551ab 55%,#073474 100%);text-align:center;overflow:hidden}
+    .cover:before,.cover:after{content:"";position:absolute;border:2px solid #ffffff20;border-radius:50%;z-index:-1}
+    .cover:before{width:340px;height:340px;top:-160px;right:-160px}
+    .cover:after{width:300px;height:300px;bottom:-205px;left:-125px}
+    .eyebrow{display:inline-block;background:#ffffff26;border:1px solid #ffffff4a;border-radius:50px;padding:7px 13px;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+    h1{margin:27px 0 14px;font-weight:1000;line-height:.95;letter-spacing:-.058em;text-transform:uppercase;font-size:clamp(36px,9.6vw,52px);text-shadow:0 3px 2px #01275520}
+    h1 span{display:block}
+    .highlight{color:var(--yellow);filter:drop-shadow(0 4px 1px #06285e38)}
+    .cover-line{width:88px;height:5px;background:var(--yellow);border-radius:50px;margin:19px auto 19px}
+    .cover p{margin:0 auto 22px;max-width:340px;font-size:15px;line-height:1.55;color:#e8f4ff}
+    .hero-tag{display:inline-flex;align-items:center;gap:8px;border-radius:50px;background:#001f4c6e;color:#fff;padding:8px 12px;font-size:12px;font-weight:750;margin:0 0 22px}
+    .primary{width:100%;max-width:355px;min-height:56px;border:0;border-radius:16px;background:var(--yellow);color:#063465;font-weight:950;letter-spacing:.03em;box-shadow:0 6px 0 #cc9b34,0 14px 30px #021d4880;font-size:16px;padding:12px}
+    .primary:active{transform:translateY(3px);box-shadow:0 3px 0 #cc9b34}
+    .section-head{margin:32px 0 14px;display:flex;justify-content:space-between;gap:10px;align-items:end}
+    .section-head h2{margin:0;font-size:22px;letter-spacing:-.03em;line-height:1.15}
+    .section-head p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .mini-count{font-size:12px;font-weight:800;background:#ffffff20;padding:7px 11px;border-radius:50px;white-space:nowrap}
+    .chapter-list{display:grid;gap:11px}
+    .chapter-button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:#ffffff13;border:1px solid #ffffff33;border-radius:18px;padding:13px;color:white;box-shadow:0 5px 17px #001d4d26;transition:background .15s,transform .15s}
+    .chapter-button:active{transform:scale(.99)}
+    .chapter-icon{flex:0 0 53px;width:53px;height:53px;border-radius:15px;display:grid;place-items:center;font-size:27px;background:#ffe46b;color:#08396c;box-shadow:inset 0 -4px 0 #e6b43855}
+    .chapter-copy{flex:1;min-width:0}
+    .chapter-copy strong{font-size:16px;display:block;line-height:1.25}
+    .chapter-copy small{display:block;font-size:12px;color:#d5eaff;line-height:1.35;margin-top:4px}
+    .chevron{font-size:25px;line-height:1;color:var(--yellow);font-weight:700}
+    .home-note{font-size:12px;line-height:1.5;color:var(--muted);text-align:center;margin-top:23px}
+    .detail{padding:20px 17px 110px}
+    .back{border:1px solid #ffffff40;background:#ffffff17;color:white;border-radius:12px;padding:9px 12px;font-size:13px;font-weight:800}
+    .chapter-top{margin-top:16px;border-radius:24px;padding:24px 18px 21px;background:radial-gradient(circle at 89% -1%,#69c6ff88,transparent 43%),linear-gradient(140deg,#096ecb,#06458f);border:1px solid #6ac1ff45;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    .chapter-top:after{content:"";position:absolute;top:-75px;right:-80px;width:200px;height:200px;border-radius:50%;border:32px solid #ffffff0c;pointer-events:none}
+    .index{font-size:11px;letter-spacing:.14em;font-weight:900;color:#ffea80;text-transform:uppercase;position:relative}
+    .chapter-heading{font-size:clamp(30px,7.6vw,42px);line-height:1.04;letter-spacing:-.042em;margin:12px 0 12px;font-weight:950;position:relative}
+    .chapter-heading span{color:var(--yellow);display:block}
+    .chapter-desc{font-size:calc(14px * var(--reading));line-height:1.55;color:#eef7ff;margin:0;position:relative}
+    .node-root{margin:24px 10px 4px;padding:15px;text-align:center;border:2px solid var(--yellow);border-radius:16px;background:#ffdf6b;color:#07376c;font-weight:950;letter-spacing:.075em;font-size:14px;box-shadow:0 5px 0 #cfaa3b}
+    .node-arrow{text-align:center;color:var(--yellow);font-size:26px;font-weight:900;height:39px;line-height:39px}
+    .nodes{position:relative;padding-left:22px;display:grid;gap:12px;margin-top:5px}
+    .nodes:before{content:"";position:absolute;left:9px;top:10px;bottom:16px;width:2px;background:linear-gradient(var(--yellow),#b8dffd66)}
+    .topic{position:relative;background:#ffffff13;border:1px solid #ffffff2d;border-radius:16px;padding:14px 14px 15px 15px;box-shadow:0 7px 23px #00183920}
+    .topic:before{content:"";position:absolute;left:-21px;top:21px;width:12px;height:12px;background:var(--yellow);border:3px solid #125ba9;border-radius:50%}
+    .topic .label{display:flex;gap:10px;align-items:center;margin-bottom:9px}
+    .topic .bubble{width:30px;height:30px;flex:none;display:grid;place-items:center;background:var(--yellow);color:var(--deep);border-radius:10px;font-size:17px}
+    .topic h3{font-size:16px;margin:0;font-weight:900;letter-spacing:-.02em}
+    .topic p,.topic li{font-size:calc(14px * var(--reading));line-height:1.52;color:#e8f3ff}
+    .topic p{margin:0}
+    .topic ul{margin:0;padding-left:19px;display:grid;gap:5px}
+    .topic li::marker{color:var(--yellow)}
+    .topic strong{color:#ffeb95}
+    .memorize{margin-top:19px;border-radius:19px;padding:19px;background:#fff2b5;color:#07366a;box-shadow:0 6px 0 #d8aa35}
+    .memorize h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.1em}
+    .memorize p{margin:0;font-size:calc(16px * var(--reading));font-weight:900;line-height:1.4}
+    .pager{display:flex;gap:10px;margin-top:26px}
+    .pager button{flex:1;border-radius:14px;padding:14px 11px;min-height:49px;font-size:13px;font-weight:850;background:#ffffff1a;border:1px solid #ffffff40;color:white}
+    .pager button.next{background:var(--yellow);color:#072a5b;border-color:var(--yellow)}
+    .compare{padding:25px 18px 110px}
+    .compare h2{font-size:34px;line-height:1.1;letter-spacing:-.05em;margin:20px 0 10px}
+    .compare>p{font-size:15px;line-height:1.5;color:#dbeaff}
+    .compare-stack{display:grid;gap:12px;margin:21px 0}
+    .compare-card{background:#ffffff13;border:1px solid #ffffff35;border-radius:17px;padding:15px}
+    .compare-card b{font-size:17px;color:var(--yellow)}
+    .compare-card p{font-size:14px;line-height:1.52;margin:7px 0 0}
+    .key{margin-top:5px;display:inline-block;background:#ffe46b;color:#073a79;font-weight:900;border-radius:8px;padding:4px 8px;font-size:12px}
+    .footer-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:560px;width:100%;z-index:30;display:flex;gap:4px;padding:9px 14px calc(9px + env(safe-area-inset-bottom));background:#052858f7;backdrop-filter:blur(12px);border-top:1px solid #ffffff30;box-shadow:0 -4px 20px #00153040}
+    .footer-nav button{flex:1;display:grid;place-items:center;gap:3px;padding:8px 3px;border-radius:12px;background:transparent;color:#d4e5fa;border:0;font-size:11px;font-weight:750}
+    .footer-nav .nav-icon{font-size:20px;line-height:1.2}
+    .footer-nav button.selected{background:#ffffff18;color:var(--yellow)}
+    .sr-only{position:absolute;clip:rect(0,0,0,0);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+    @media(min-width:600px){.app:before{max-width:560px;margin:auto}.cover{padding-top:58px;min-height:520px}.cover h1{font-size:54px}.topbar{padding-inline:24px}.home{padding-inline:22px}.detail{padding-inline:25px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand" aria-label="Curso de Contabilidade Professor Moreira"><div class="seal">PM</div><div class="brand-text">Curso de Contabilidade<strong>Professor Moreira</strong></div></div>
+    <div class="top-actions"><button class="tiny-btn" id="smaller" type="button" aria-label="Diminuir tamanho do texto">A−</button><button class="tiny-btn" id="bigger" type="button" aria-label="Aumentar tamanho do texto">A+</button></div>
+  </header>
+  <main>
+    <section id="home" class="view home active" aria-labelledby="home-heading">
+      <div class="cover">
+        <div class="eyebrow">Material de revisão • 5 mapas textuais</div>
+        <h1 id="home-heading"><span>RAMOS DA</span><span class="highlight">CONTABILIDADE</span></h1>
+        <div class="cover-line"></div>
+        <p>Entenda as diferenças entre os cinco principais ramos da Contabilidade com mapas textuais claros e diretos.</p>
+        <div class="hero-tag">📚 Estude pelo celular • Acesso livre</div>
+        <div><button class="primary" type="button" data-go="0">COMEÇAR AGORA →</button></div>
+      </div>
+      <div class="section-head"><div><h2>Escolha um ramo</h2><p>Toque para abrir o mapa completo.</p></div><span class="mini-count">05 temas</span></div>
+      <div id="chapter-list" class="chapter-list"></div>
+      <p class="home-note">Material didático — Curso de Contabilidade Professor Moreira.<br>Funciona sem internet depois de salvo no dispositivo.</p>
+    </section>
+    <section id="chapter" class="view detail" aria-live="polite" aria-label="Mapa textual do ramo selecionado"></section>
+    <section id="compare" class="view compare" aria-labelledby="compare-heading">
+      <button class="back" data-go="home" type="button">← Voltar à capa</button>
+      <h2 id="compare-heading">RESUMO <span style="color:var(--yellow)">PARA PROVAS</span></h2>
+      <p>Associe as palavras-chave ao ramo da Contabilidade. Esta é uma revisão rápida depois dos cinco mapas.</p>
+      <div id="compare-stack" class="compare-stack"></div>
+      <div class="memorize"><h3>🧠 Macete Professor Moreira</h3><p>Sócios → Societária<br>Impostos → Tributária<br>Produção → Custos<br>Decisões → Gerencial<br>Governo → Pública</p></div>
+      <div class="pager"><button data-go="4" type="button">← Voltar ao último mapa</button><button class="next" data-go="home" type="button">Ver capa →</button></div>
+    </section>
+  </main>
+  <nav class="footer-nav" aria-label="Navegação principal">
+    <button type="button" id="nav-home" class="selected" data-go="home"><span class="nav-icon">⌂</span>Início</button>
+    <button type="button" id="nav-0" data-go="0"><span class="nav-icon">📘</span>Societária</button>
+    <button type="button" id="nav-1" data-go="1"><span class="nav-icon">🧾</span>Tributária</button>
+    <button type="button" id="nav-2" data-go="2"><span class="nav-icon">📊</span>Custos</button>
+    <button type="button" id="nav-compare" data-go="compare"><span class="nav-icon">★</span>Resumo</button>
+  </nav>
+</div>
+<script>
+(function(){
+  'use strict';
+  const chapters = [
+    {
+      name:'Contabilidade Societária', short:'Societária', icon:'🏢', hint:'Patrimônio • Demonstrações • Transparência',
+      concept:'Estuda, registra, controla e evidencia os fatos contábeis das sociedades empresárias, fornecendo informações sobre a situação patrimonial, financeira e econômica.',
+      nodes:[
+        {title:'Finalidade',icon:'📄',items:['Fornecer informações contábeis para a tomada de decisões de sócios, investidores, credores e demais interessados.']},
+        {title:'Objetivos',icon:'🎯',items:['Evidenciar a situação patrimonial, financeira e econômica.','Apoiar a tomada de decisões.','Permitir a avaliação do desempenho.','Atender às exigências legais e regulatórias.']},
+        {title:'Principais usuários',icon:'👥',items:['Sócios e acionistas.','Administradores e gestores.','Investidores e credores.','Governo, empregados e sociedade em geral.']},
+        {title:'Base normativa',icon:'⚙️',items:['Lei nº 6.404/1976 (Lei das Sociedades por Ações).','Normas Brasileiras de Contabilidade (NBCs).','Pronunciamentos Contábeis (CPCs).','Normas internacionais de contabilidade (IFRS).']},
+        {title:'Demonstrações contábeis',icon:'📊',items:['Balanço Patrimonial (BP).','Demonstração do Resultado do Exercício (DRE).','Demonstração dos Fluxos de Caixa (DFC).','Demonstração das Mutações do Patrimônio Líquido (DMPL).','Demonstração do Valor Adicionado (DVA), quando exigida.','Notas Explicativas.']},
+        {title:'Importância',icon:'✅',items:['Garante transparência nas informações contábeis.','Permite comparação entre empresas.','Contribui para a governança corporativa.','Facilita o acesso a investimentos e crédito.','Atende às exigências legais e do mercado.']}
+      ], memory:'PATRIMÔNIO + DEMONSTRAÇÕES CONTÁBEIS + TRANSPARÊNCIA',keyword:'Patrimônio',focus:'Informações e demonstrações contábeis'
+    },
+    {
+      name:'Contabilidade Tributária', short:'Tributária', icon:'🧾', hint:'Tributos • Obrigações fiscais • Planejamento',
+      concept:'Estuda, interpreta, registra e controla os fatos contábeis relacionados aos tributos, buscando a correta apuração dos impostos, taxas e contribuições e o cumprimento das obrigações fiscais.',
+      nodes:[
+        {title:'Finalidade',icon:'📄',items:['Fornecer informações para calcular, registrar, controlar e pagar corretamente os tributos.','Contribuir para o cumprimento da legislação fiscal e a tomada de decisões.']},
+        {title:'Objetivos',icon:'🎯',items:['Apurar corretamente os tributos.','Registrar os aspectos fiscais.','Controlar as obrigações acessórias.','Evitar autuações e penalidades.','Apoiar o planejamento tributário lícito.','Fornecer informações confiáveis para a gestão.']},
+        {title:'Principais usuários',icon:'👥',items:['Gestores e administradores.','Órgãos fiscais (Receita Federal, Secretarias de Fazenda etc.).','Investidores e acionistas.','Credores e instituições financeiras.','Auditores, consultores e sociedade.']},
+        {title:'Base normativa',icon:'⚙️',items:['Código Tributário Nacional (CTN — Lei nº 5.172/1966).','Legislação dos impostos, taxas e contribuições federais, estaduais e municipais.','Normas Brasileiras de Contabilidade (NBCs), quando aplicáveis.','Pronunciamentos Contábeis (CPCs).','Normas da Receita Federal do Brasil e dos demais órgãos fiscais.']},
+        {title:'Principais tributos',icon:'📊',items:['IRPJ — Imposto de Renda da Pessoa Jurídica.','CSLL — Contribuição Social sobre o Lucro Líquido.','PIS e Cofins.','ICMS — Imposto sobre Circulação de Mercadorias e Serviços.','ISS — Imposto sobre Serviços.','IPI — Imposto sobre Produtos Industrializados.','IOF — Imposto sobre Operações Financeiras.','Outros tributos aplicáveis à atividade.']},
+        {title:'Importância',icon:'✅',items:['Garante o cumprimento das obrigações fiscais.','Reduz riscos de multas e autuações.','Auxilia no planejamento tributário.','Contribui para a eficiência financeira.','Apoia a transparência e a conformidade legal.']}
+      ],memory:'TRIBUTOS + OBRIGAÇÕES FISCAIS + PLANEJAMENTO TRIBUTÁRIO',keyword:'Tributos',focus:'Apuração e obrigações fiscais'
+    },
+    {
+      name:'Contabilidade de Custos', short:'Custos', icon:'🏭', hint:'Produção • Mensuração • Controle',
+      concept:'Identifica, mensura, registra, acumula, controla e analisa os custos de produtos, serviços e processos, oferecendo informações para a gestão eficiente dos recursos.',
+      nodes:[
+        {title:'Finalidade',icon:'📄',items:['Fornecer informações sobre custos de produção, prestação de serviços e demais atividades.','Apoiar o planejamento, o controle e a tomada de decisões.']},
+        {title:'Objetivos',icon:'🎯',items:['Apurar e mensurar os custos.','Controlar os gastos.','Avaliar o desempenho operacional.','Auxiliar na formação do preço de venda.','Apoiar o planejamento e o orçamento.','Fornecer informações para decisões gerenciais.']},
+        {title:'Principais elementos dos custos',icon:'⚙️',items:['Matéria-prima (MP): materiais utilizados na produção.','Mão de obra direta (MOD): trabalho diretamente aplicado à produção.','Custos indiretos de fabricação (CIF): energia, depreciação, manutenção e outros custos indiretos.']},
+        {title:'Métodos de custeio',icon:'📊',items:['Custeio por absorção.','Custeio variável (direto).','Custeio baseado em atividades (ABC).','Custeio padrão.','Custeio por processo.','Custeio por ordem de produção.']},
+        {title:'Usuários das informações',icon:'👥',items:['Gestores e administradores.','Investidores e acionistas.','Credores e instituições financeiras.','Órgãos reguladores e fiscais.','Sociedade em geral.']},
+        {title:'Base normativa',icon:'📚',items:['Normas Brasileiras de Contabilidade (NBC TG), quando aplicáveis.','Pronunciamentos Contábeis (CPCs), especialmente CPC 16 — Estoques.','Literatura e métodos de custeio reconhecidos.']},
+        {title:'Importância',icon:'✅',items:['Contribui para a formação de preços competitivos.','Reduz desperdícios e aumenta a eficiência.','Melhora o controle dos recursos.','Auxilia na avaliação da rentabilidade.','Suporta o planejamento estratégico.']}
+      ],memory:'IDENTIFICAÇÃO + MENSURAÇÃO + CONTROLE DOS CUSTOS',keyword:'Produção',focus:'Mensuração e controle dos custos'
+    },
+    {
+      name:'Contabilidade Gerencial', short:'Gerencial', icon:'📈', hint:'Planejamento • Controle • Decisões internas',
+      concept:'Fornece informações relevantes, tempestivas e personalizadas para o planejamento, o controle e a tomada de decisões internas, auxiliando os gestores na administração da entidade.',
+      nodes:[
+        {title:'Finalidade',icon:'📄',items:['Fornecer informações gerenciais para apoiar os gestores na tomada de decisões, no planejamento, no controle e na avaliação do desempenho.']},
+        {title:'Objetivos',icon:'🎯',items:['Apoiar o processo decisório.','Planejar e controlar as atividades.','Avaliar o desempenho.','Identificar oportunidades de melhoria.','Auxiliar na alocação eficiente de recursos.','Contribuir para a competitividade da entidade.']},
+        {title:'Principais características',icon:'⚙️',items:['Foco no uso interno da informação.','Informações detalhadas e segmentadas.','Flexibilidade nos relatórios.','Ênfase em dados financeiros e não financeiros.','Não segue obrigatoriamente as normas fiscais e societárias para seus relatórios internos.','Utiliza diversas técnicas e ferramentas de análise.']},
+        {title:'Principais informações fornecidas',icon:'📊',items:['Custos de produtos, serviços e processos.','Margem de contribuição.','Ponto de equilíbrio.','Orçamento e orçamento de caixa.','Análise de variações (real × orçado).','Indicadores de desempenho (KPIs).','Relatórios por centro de custos, departamentos e projetos.']},
+        {title:'Usuários das informações',icon:'👥',items:['Administradores e gestores.','Gerentes de produção, vendas e finanças.','Diretores e conselho administrativo.','Todos os responsáveis pela tomada de decisões internas.']},
+        {title:'Principais ferramentas',icon:'📚',items:['Orçamento empresarial.','Análise custo-volume-lucro (CVL).','Custeio por absorção, variável e ABC.','Indicadores de desempenho.','Balanced Scorecard (BSC).','Relatórios gerenciais e dashboards.']},
+        {title:'Importância',icon:'✅',items:['Melhora o processo de gestão.','Permite decisões mais rápidas e assertivas.','Contribui para a redução de custos.','Aumenta a eficiência operacional.','Apoia a sustentabilidade e a continuidade da entidade.']}
+      ],memory:'PLANEJAMENTO + CONTROLE + TOMADA DE DECISÃO',keyword:'Decisão',focus:'Planejamento e gestão interna'
+    },
+    {
+      name:'Contabilidade Pública', short:'Pública', icon:'🏛️', hint:'Recursos públicos • Controle • Transparência',
+      concept:'Estuda, registra, controla e evidencia os atos e fatos da gestão dos recursos públicos, fornecendo informações para a tomada de decisões, o controle social e a transparência da administração pública.',
+      nodes:[
+        {title:'Finalidade',icon:'📄',items:['Fornecer informações contábeis sobre a gestão dos recursos públicos.','Contribuir para o planejamento, a execução, o controle e a avaliação das políticas públicas.']},
+        {title:'Objetivos',icon:'🎯',items:['Registrar atos e fatos da gestão pública.','Evidenciar a situação patrimonial, orçamentária, financeira e fiscal.','Apoiar a tomada de decisões.','Contribuir para a transparência e o controle social.','Atender às exigências legais e às normas de contabilidade aplicadas ao setor público.']},
+        {title:'Base normativa',icon:'⚙️',items:['Lei nº 4.320/1964.','Lei Complementar nº 101/2000 — Lei de Responsabilidade Fiscal (LRF).','Normas Brasileiras de Contabilidade Aplicadas ao Setor Público (NBC TSP).','Manual de Contabilidade Aplicada ao Setor Público (MCASP).','Plano de Contas Aplicado ao Setor Público (PCASP).']},
+        {title:'Principais características',icon:'🏛️',items:['Aplica-se às entidades do setor público.','Utiliza os regimes e procedimentos patrimoniais e orçamentários pertinentes.','Exige transparência e responsabilidade na gestão fiscal.','Segrega e evidencia a execução orçamentária.','Atende a normas específicas do setor público.']},
+        {title:'Usuários das informações',icon:'👥',items:['Cidadãos e sociedade em geral.','Órgãos de controle, como TCU, TCEs e CGU.','Poder Legislativo.','Gestores públicos e órgãos de planejamento.','Fornecedores, credores e organizações internacionais.']},
+        {title:'Demonstrações contábeis',icon:'📊',items:['Balanço Orçamentário.','Balanço Financeiro.','Balanço Patrimonial.','Demonstração das Variações Patrimoniais (DVP).','Demonstração dos Fluxos de Caixa (DFC).','Notas Explicativas.']},
+        {title:'Importância',icon:'✅',items:['Promove a boa governança pública.','Aumenta a transparência da gestão.','Permite o acompanhamento da execução do orçamento.','Contribui para o controle social e institucional.','Apoia a eficiência e a efetividade das políticas públicas.']}
+      ],memory:'RECURSOS PÚBLICOS + PRESTAÇÃO DE CONTAS + TRANSPARÊNCIA',keyword:'Recursos públicos',focus:'Controle e prestação de contas'
+    }
+  ];
+  const $ = id => document.getElementById(id);
+  let current='home';
+  let reading=1;
+  const svgSafe = s => String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+
+  $('chapter-list').innerHTML=chapters.map((c,i)=>`<button type="button" class="chapter-button" data-go="${i}" aria-label="Abrir mapa de ${svgSafe(c.name)}"><span class="chapter-icon" aria-hidden="true">${c.icon}</span><span class="chapter-copy"><strong>${svgSafe(c.name)}</strong><small>${svgSafe(c.hint)}</small></span><span class="chevron">›</span></button>`).join('');
+  $('compare-stack').innerHTML=chapters.map(c=>`<article class="compare-card"><b>${c.icon} ${svgSafe(c.name)}</b><div><span class="key">${svgSafe(c.keyword)}</span></div><p>${svgSafe(c.focus)}</p></article>`).join('');
+
+  function renderChapter(i){
+    const c=chapters[i];
+    $('chapter').innerHTML=`
+      <button type="button" class="back" data-go="home">← Voltar à capa</button>
+      <div class="chapter-top"><div class="index">MAPA TEXTUAL ${String(i+1).padStart(2,'0')} / 05</div>
+      <h2 class="chapter-heading">CONTABILIDADE <span>${svgSafe(c.short.toUpperCase())}</span></h2>
+      <p class="chapter-desc">${svgSafe(c.concept)}</p></div>
+      <div class="node-root">${c.icon} ${svgSafe(c.name.toUpperCase())}</div><div class="node-arrow">↓</div>
+      <div class="nodes">${c.nodes.map(n=>`<article class="topic"><div class="label"><span class="bubble" aria-hidden="true">${n.icon}</span><h3>${svgSafe(n.title)}</h3></div>${n.items.length===1?`<p>${svgSafe(n.items[0])}</p>`:`<ul>${n.items.map(t=>`<li>${svgSafe(t)}</li>`).join('')}</ul>`}</article>`).join('')}</div>
+      <aside class="memorize"><h3>🧠 Para memorizar</h3><p>${svgSafe(c.memory)}</p></aside>
+      <div class="pager"><button type="button" data-go="${i===0?'home':i-1}">← ${i===0?'Capa':'Anterior'}</button><button type="button" class="next" data-go="${i===4?'compare':i+1}">${i===4?'Ver resumo':'Próximo mapa'} →</button></div>`;
+  }
+  function go(target){
+    target=String(target);
+    if(target!=='home'&&target!=='compare'&&!/^\d+$/.test(target))return;
+    if(/^\d+$/.test(target)&&!(Number(target)>=0&&Number(target)<chapters.length))return;
+    current=target;
+    $('home').classList.toggle('active',target==='home');
+    $('chapter').classList.toggle('active',/^\d+$/.test(target));
+    $('compare').classList.toggle('active',target==='compare');
+    if(/^\d+$/.test(target))renderChapter(Number(target));
+    ['home','0','1','2','compare'].forEach(k=>{const e=$('nav-'+k);e.classList.toggle('selected',k===target); e.setAttribute('aria-current',k===target?'page':'false')});
+    window.scrollTo({top:0,behavior:'instant'});
+    try{history.replaceState(null,'','#'+(target==='home'?'inicio':target==='compare'?'resumo':'mapa-'+(Number(target)+1)))}catch(e){}
+  }
+  document.addEventListener('click',event=>{const button=event.target.closest('[data-go]');if(button){go(button.dataset.go)}});
+  $('bigger').addEventListener('click',()=>{reading=Math.min(1.35,Math.round((reading+.1)*100)/100);document.documentElement.style.setProperty('--reading',reading)});
+  $('smaller').addEventListener('click',()=>{reading=Math.max(.85,Math.round((reading-.1)*100)/100);document.documentElement.style.setProperty('--reading',reading)});
+  const hash=location.hash.replace('#','');
+  if(hash==='resumo')go('compare');else if(/^mapa-[1-5]$/.test(hash))go(String(Number(hash.slice(-1))-1));
+})();
+</script>
+</body>
+</html>
